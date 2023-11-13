@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movie Recommendation System - Charts</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h1>Movie Recommendation System - Charts</h1>
+
+    <!-- Add a div element to render the chart -->
+    <div id="movieChart"></div>
+
+    <script>
+        // Parse the JSON data for the chart
+        const chartData = {{ chart_json|tojson|safe }};
+
+        // Create and display the chart using Plotly
+        Plotly.newPlot('movieChart', chartData.data, chartData.layout);
+    </script>
+</body>
+</html>

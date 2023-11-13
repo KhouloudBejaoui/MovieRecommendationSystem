@@ -1,0 +1,65 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movie Recommendation System</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="form-container">
+        <h1>Movie Recommendation System</h1>
+        <form action="/recommend" method="post">
+            <label for="movie_name">Enter a movie:</label>
+            <br/>
+            <input type="text" id="movie_name" name="movie_name">
+            <br/>
+            <input type="submit" id="search_button" value="Recommend Movies">
+        </form>
+        <div id="suggestions"></div>
+
+        <div class="recommendations">
+            <!-- Display recommendations here -->
+        </div>
+    </div>
+<script>
+        $(document).ready(function () {
+            $('#movie_name').on('input', function () {
+                const query = $(this).val();
+                if (query.length >= 3) {  // Adjust the minimum query length as needed
+                    fetchMovieSuggestions(query);
+                } else {
+                    $('#suggestions').empty();
+                }
+            });
+
+            function fetchMovieSuggestions(query) {
+                $.get('/suggestions', { query: query }, function (data) {
+                    displaySuggestions(data);
+                });
+            }
+
+            function displaySuggestions(suggestions) {
+                const suggestionsList = $('#suggestions');
+                suggestionsList.empty();
+                if (suggestions.length === 0) {
+                    suggestionsList.hide(); // Hide suggestions if there are none
+                } else {
+                    suggestionsList.show(); // Show suggestions
+                    suggestions.forEach(function (movie) {
+                        suggestionsList.append('<p>' + movie + '</p>');
+                    });
+                }
+            }
+
+            // Handle click on a suggestion
+            $('#suggestions').on('click', 'p', function () {
+                const selectedMovie = $(this).text();
+                $('#movie_name').val(selectedMovie);
+                $('#suggestions').empty(); // Clear suggestions
+            });
+        });
+    </script>
+</body>
+</html>
+

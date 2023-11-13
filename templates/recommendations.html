@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movie Recommendations</title>
+    <style>
+        /* Style for the container of recommendations */
+        .recommendations-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Style for each movie recommendation */
+        .movie-recommendation {
+            margin: 20px;
+            text-align: center;
+        }
+
+        /* Style for the movie image */
+        .movie-image {
+            max-width: 200px;
+            height: auto;
+        }
+
+        /* Style for the movie title */
+        .movie-title {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Recommended Movies for {{ movie_name }}</h1>
+
+    <div class="recommendations-container">
+        {% for index, movie, image_url in recommendations %}
+            <div class="movie-recommendation">
+                <img src="{{ image_url }}" alt="{{ movie }} Image" class="movie-image">
+                <div class="movie-title">{{ movie }}</div>
+                
+            </div>
+        {% endfor %}
+    </div>
+    <h2>Did You like the movies returned ?</h2>
+    <form action="{{ url_for('process_response', movie_id=movie_id, response=1) }}" method="get">
+        <input type="submit" value="Yes">
+    </form>
+    <br/>
+    <form action="{{ url_for('process_response', movie_id=movie_id, response=0) }}" method="get">
+        <input type="submit" value="No">
+    </form>
+        <br/>
+    <a href="/">Back to Home</a>
+
+</body>
+</html>
